@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface KoliberDescription {
     String comment();
+    int priority() default 0;
 }

@@ -14,10 +14,10 @@ public class Invoice {
 
     @KoliberFieldDescription(comment = "Numer")
     private String number;
-    @KoliberFieldDescription(comment = "Kwota")
+    @KoliberFieldDescription(comment = "Kwota", priority = 2)
     private BigDecimal amount;
-    @KoliberDescription(comment = "Waluta")
+    @KoliberDescription(comment = "Waluta", priority = 3)
     private Currency currency;
-    @KoliberDescription(comment = "Kontrahent")
+    @KoliberDescription(comment = "Kontrahent", priority = 1)
     private Contractor contractor;
 }
