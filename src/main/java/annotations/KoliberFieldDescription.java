@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface KoliberFieldDescription {
-    String comment();
+    String comment() default "";
+
     int priority() default 0;
 }

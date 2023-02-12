@@ -22,23 +22,7 @@ public class KoliberPrinter {
 
         Arrays.stream(declaredFields)
                 .filter(field -> field.isAnnotationPresent(KoliberFieldDescription.class) || field.isAnnotationPresent(KoliberDescription.class))
-                .sorted((f1, f2) -> {
-                    int f1Priority;
-                    int f2Priority;
-                    if (f1.isAnnotationPresent(KoliberFieldDescription.class)) {
-                        f1Priority = f1.getAnnotation(KoliberFieldDescription.class).priority();
-                    } else {
-                        f1Priority = f1.getAnnotation(KoliberDescription.class).priority();
-                    }
-
-                    if (f2.isAnnotationPresent(KoliberFieldDescription.class)) {
-                        f2Priority = f2.getAnnotation(KoliberFieldDescription.class).priority();
-                    } else {
-                        f2Priority = f2.getAnnotation(KoliberDescription.class).priority();
-                    }
-
-                    return Integer.compare(f2Priority, f1Priority);
-                })
+                .sorted(KoliberPrinter::compareFields)
                 .forEach(field -> {
                     if (field.isAnnotationPresent(KoliberFieldDescription.class)) {
                         printWithFormat(field.getName() + " - " + field.getAnnotation(KoliberFieldDescription.class).comment(), spaces);
@@ -56,6 +40,24 @@ public class KoliberPrinter {
                         }
                     }
                 });
+    }
+
+    private static int compareFields(Field firstField, Field secondField) {
+        int firstFieldPriority;
+        int secondFieldPriority;
+        if (firstField.isAnnotationPresent(KoliberFieldDescription.class)) {
+            firstFieldPriority = firstField.getAnnotation(KoliberFieldDescription.class).priority();
+        } else {
+            firstFieldPriority = firstField.getAnnotation(KoliberDescription.class).priority();
+        }
+
+        if (secondField.isAnnotationPresent(KoliberFieldDescription.class)) {
+            secondFieldPriority = secondField.getAnnotation(KoliberFieldDescription.class).priority();
+        } else {
+            secondFieldPriority = secondField.getAnnotation(KoliberDescription.class).priority();
+        }
+
+        return Integer.compare(secondFieldPriority, firstFieldPriority);
     }
 
     private static String getShortClassName(Class<?> classType) {
